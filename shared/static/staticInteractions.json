@@ -1,0 +1,56 @@
+[
+  {
+    "followers": [
+      {
+        "user_id": "user1",
+        "user_pic": "/images/user1-pic.jpg",
+        "user_name": "Alice Johnson"
+      },
+      {
+        "user_id": "user2",
+        "user_pic": "/images/user2-pic.jpg",
+        "user_name": "Bob Smith"
+      }
+    ],
+    "following": [
+      {
+        "user_id": "user3",
+        "user_pic": "/images/user3-pic.jpg",
+        "user_name": "Charlie Brown"
+      },
+      {
+        "user_id": "user4",
+        "user_pic": "/images/user4-pic.jpg",
+        "user_name": "David Jones"
+      }
+    ],
+    "users": "user123"
+  },
+  {
+    "followers": [
+      {
+        "user_id": "user5",
+        "user_pic": "/images/user5-pic.jpg",
+        "user_name": "Emma Watson"
+      },
+      {
+        "user_id": "user6",
+        "user_pic": "/images/user6-pic.jpg",
+        "user_name": "Frank Miller"
+      }
+    ],
+    "following": [
+      {
+        "user_id": "user7",
+        "user_pic": "/images/user7-pic.jpg",
+        "user_name": "Grace Kelly"
+      },
+      {
+        "user_id": "user8",
+        "user_pic": "/images/user8-pic.jpg",
+        "user_name": "Henry Ford"
+      }
+    ],
+    "users": "user456"
+  }
+]
