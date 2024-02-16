@@ -12,7 +12,7 @@
     "comments": [],
     "createdAt": "2022-01-22T12:34:56.789Z",
     "updatedAt": "2022-01-22T12:34:56.789Z",
-    "_id": "ObjectId_of_post_1"
+    "id": "ObjectId_of_post_1"
   },
   {
     "fullName": "Alice Johnson",
@@ -27,7 +27,7 @@
     "comments": [],
     "createdAt": "2022-01-23T09:45:30.123Z",
     "updatedAt": "2022-01-23T09:45:30.123Z",
-    "_id": "ObjectId_of_post_2"
+    "id": "ObjectId_of_post_2"
   },
   {
     "fullName": "Bob Smith",
@@ -42,7 +42,7 @@
     "comments": [],
     "createdAt": "2022-01-24T15:20:10.456Z",
     "updatedAt": "2022-01-24T15:20:10.456Z",
-    "_id": "ObjectId_of_post_3"
+    "id": "ObjectId_of_post_3"
   },
   {
     "fullName": "Emma Watson",
@@ -57,7 +57,7 @@
     "comments": [],
     "createdAt": "2022-01-25T11:12:34.567Z",
     "updatedAt": "2022-01-25T11:12:34.567Z",
-    "_id": "ObjectId_of_post_4"
+    "id": "ObjectId_of_post_4"
   },
   {
     "fullName": "Alex Brown",
@@ -72,7 +72,7 @@
     "comments": [],
     "createdAt": "2022-01-26T14:30:45.678Z",
     "updatedAt": "2022-01-26T14:30:45.678Z",
-    "_id": "ObjectId_of_post_5"
+    "id": "ObjectId_of_post_5"
   },
   {
     "fullName": "Sophia Turner",
@@ -87,7 +87,7 @@
     "comments": [],
     "createdAt": "2022-01-27T17:45:00.987Z",
     "updatedAt": "2022-01-27T17:45:00.987Z",
-    "_id": "ObjectId_of_post_6"
+    "id": "ObjectId_of_post_6"
   },
   {
     "fullName": "Jane Smith",
@@ -102,7 +102,7 @@
     "comments": [],
     "createdAt": "2022-01-25T08:12:34.567Z",
     "updatedAt": "2022-01-25T08:12:34.567Z",
-    "_id": "ObjectId_of_post_4"
+    "id": "ObjectId_of_post_4"
   },
   {
     "fullName": "Charlie Brown",
@@ -117,7 +117,7 @@
     "comments": [],
     "createdAt": "2022-01-26T14:30:45.678Z",
     "updatedAt": "2022-01-26T14:30:45.678Z",
-    "_id": "ObjectId_of_post_5"
+    "id": "ObjectId_of_post_5"
   },
   {
     "fullName": "Eva Green",
@@ -132,7 +132,7 @@
     "comments": [],
     "createdAt": "2022-01-27T11:15:20.789Z",
     "updatedAt": "2022-01-27T11:15:20.789Z",
-    "_id": "ObjectId_of_post_6"
+    "id": "ObjectId_of_post_6"
   },
   {
     "fullName": "John Doe",
@@ -147,7 +147,7 @@
     "comments": [],
     "createdAt": "2022-01-22T12:34:56.789Z",
     "updatedAt": "2022-01-22T12:34:56.789Z",
-    "_id": "ObjectId_of_post_1"
+    "id": "ObjectId_of_post_1"
   },
   {
     "fullName": "Alice Johnson",
@@ -162,7 +162,7 @@
     "comments": [],
     "createdAt": "2022-01-23T09:45:30.123Z",
     "updatedAt": "2022-01-23T09:45:30.123Z",
-    "_id": "ObjectId_of_post_2"
+    "id": "ObjectId_of_post_2"
   },
   {
     "fullName": "Bob Smith",
@@ -177,7 +177,7 @@
     "comments": [],
     "createdAt": "2022-01-24T15:20:10.456Z",
     "updatedAt": "2022-01-24T15:20:10.456Z",
-    "_id": "ObjectId_of_post_3"
+    "id": "ObjectId_of_post_3"
   },
   {
     "fullName": "Emma Watson",
@@ -192,7 +192,7 @@
     "comments": [],
     "createdAt": "2022-01-25T11:12:34.567Z",
     "updatedAt": "2022-01-25T11:12:34.567Z",
-    "_id": "ObjectId_of_post_4"
+    "id": "ObjectId_of_post_4"
   },
   {
     "fullName": "Alex Brown",
@@ -207,7 +207,7 @@
     "comments": [],
     "createdAt": "2022-01-26T14:30:45.678Z",
     "updatedAt": "2022-01-26T14:30:45.678Z",
-    "_id": "ObjectId_of_post_5"
+    "id": "ObjectId_of_post_5"
   },
   {
     "fullName": "Sophia Turner",
@@ -222,7 +222,7 @@
     "comments": [],
     "createdAt": "2022-01-27T17:45:00.987Z",
     "updatedAt": "2022-01-27T17:45:00.987Z",
-    "_id": "ObjectId_of_post_6"
+    "id": "ObjectId_of_post_6"
   },
   {
     "fullName": "Jane Smith",
@@ -237,7 +237,7 @@
     "comments": [],
     "createdAt": "2022-01-25T08:12:34.567Z",
     "updatedAt": "2022-01-25T08:12:34.567Z",
-    "_id": "ObjectId_of_post_4"
+    "id": "ObjectId_of_post_4"
   },
   {
     "fullName": "Charlie Brown",
@@ -252,7 +252,7 @@
     "comments": [],
     "createdAt": "2022-01-26T14:30:45.678Z",
     "updatedAt": "2022-01-26T14:30:45.678Z",
-    "_id": "ObjectId_of_post_5"
+    "id": "ObjectId_of_post_5"
   },
   {
     "fullName": "Eva Green",
@@ -267,7 +267,7 @@
     "comments": [],
     "createdAt": "2022-01-27T11:15:20.789Z",
     "updatedAt": "2022-01-27T11:15:20.789Z",
-    "_id": "ObjectId_of_post_6"
+    "id": "ObjectId_of_post_6"
   },
   {
     "fullName": "John Doe",
@@ -282,7 +282,7 @@
     "comments": [],
     "createdAt": "2022-01-22T12:34:56.789Z",
     "updatedAt": "2022-01-22T12:34:56.789Z",
-    "_id": "ObjectId_of_post_1"
+    "id": "ObjectId_of_post_1"
   },
   {
     "fullName": "Alice Johnson",
@@ -297,7 +297,7 @@
     "comments": [],
     "createdAt": "2022-01-23T09:45:30.123Z",
     "updatedAt": "2022-01-23T09:45:30.123Z",
-    "_id": "ObjectId_of_post_2"
+    "id": "ObjectId_of_post_2"
   },
   {
     "fullName": "Bob Smith",
@@ -312,7 +312,7 @@
     "comments": [],
     "createdAt": "2022-01-24T15:20:10.456Z",
     "updatedAt": "2022-01-24T15:20:10.456Z",
-    "_id": "ObjectId_of_post_3"
+    "id": "ObjectId_of_post_3"
   },
   {
     "fullName": "Emma Watson",
@@ -327,7 +327,7 @@
     "comments": [],
     "createdAt": "2022-01-25T11:12:34.567Z",
     "updatedAt": "2022-01-25T11:12:34.567Z",
-    "_id": "ObjectId_of_post_4"
+    "id": "ObjectId_of_post_4"
   },
   {
     "fullName": "Alex Brown",
@@ -342,7 +342,7 @@
     "comments": [],
     "createdAt": "2022-01-26T14:30:45.678Z",
     "updatedAt": "2022-01-26T14:30:45.678Z",
-    "_id": "ObjectId_of_post_5"
+    "id": "ObjectId_of_post_5"
   },
   {
     "fullName": "Sophia Turner",
@@ -357,7 +357,7 @@
     "comments": [],
     "createdAt": "2022-01-27T17:45:00.987Z",
     "updatedAt": "2022-01-27T17:45:00.987Z",
-    "_id": "ObjectId_of_post_6"
+    "id": "ObjectId_of_post_6"
   },
   {
     "fullName": "Jane Smith",
@@ -372,7 +372,7 @@
     "comments": [],
     "createdAt": "2022-01-25T08:12:34.567Z",
     "updatedAt": "2022-01-25T08:12:34.567Z",
-    "_id": "ObjectId_of_post_4"
+    "id": "ObjectId_of_post_4"
   },
   {
     "fullName": "Charlie Brown",
@@ -387,7 +387,7 @@
     "comments": [],
     "createdAt": "2022-01-26T14:30:45.678Z",
     "updatedAt": "2022-01-26T14:30:45.678Z",
-    "_id": "ObjectId_of_post_5"
+    "id": "ObjectId_of_post_5"
   },
   {
     "fullName": "Eva Green",
@@ -402,6 +402,6 @@
     "comments": [],
     "createdAt": "2022-01-27T11:15:20.789Z",
     "updatedAt": "2022-01-27T11:15:20.789Z",
-    "_id": "ObjectId_of_post_6"
+    "id": "ObjectId_of_post_6"
   }
 ]

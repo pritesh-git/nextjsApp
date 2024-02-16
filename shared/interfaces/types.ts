@@ -1,5 +1,5 @@
 export type UserType = {
-  _id?: string
+  id?: string
   first_name: string
   last_name: string
   fullName?: string
@@ -22,7 +22,7 @@ export type AuthType = {
 }
 
 export type BlogType = {
-  _id: string
+  id: string
   fullName: string
   title: string
   profile_pic: string

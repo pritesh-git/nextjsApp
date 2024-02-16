@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
-import { registerUser } from '@/lib/actions'
 import {
   registerData,
   registerDefaults,
@@ -40,13 +39,23 @@ const Page: NextPage = () => {
   const onSubmit = async (values: registerData) => {
     try {
       const payload = { ...values, hobbies: selected }
-      const resp = await registerUser(payload)
+      const resp = await fetch('/api/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+      if (!resp.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const data = await resp.json()
       toast({
         variant: 'success',
         description: 'Successfully Registered',
         duration: 2500,
       })
-      console.log('resp', resp)
+      console.log('resp', data)
     } catch (err) {
       console.log('err', err)
       toast({

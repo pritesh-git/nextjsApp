@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
-import { loginUser } from '@/lib/actions'
 import { loginData, loginDefaults, loginSchema } from '@/shared/rules/login'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
@@ -27,13 +26,26 @@ const Page: NextPage = () => {
 
   const onSubmit = async (values: loginData) => {
     try {
-      const resp = await loginUser(values.email, values.password)
+      const resp = await fetch('/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      })
+      if (!resp.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const data = await resp.json()
       toast({
         variant: 'success',
         description: 'Successfully Logged In',
         duration: 2500,
       })
-      console.log('resp', resp)
+      console.log('resp', data)
     } catch (err) {
       console.log('err', err)
       toast({
