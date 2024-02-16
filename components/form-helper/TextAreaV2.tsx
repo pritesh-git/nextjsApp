@@ -1,4 +1,4 @@
-import React from 'react'
+import { cn } from '@/lib/utils'
 import {
   FormControl,
   FormField,
@@ -6,7 +6,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
-import { cn } from '@/lib/utils'
 import { Textarea } from '../ui/textarea'
 
 type Props = {

@@ -1,8 +1,5 @@
 'use client'
-import Image from 'next/image'
-import React, { FC } from 'react'
-import { Button } from './ui/button'
-import Link from 'next/link'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ModeToggle } from './modeToggle'
-import ShouldRender from './ShouldRender'
-import { useRouter } from 'next/navigation'
 import { useAuthContext } from '@/lib/AuthContext'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { FC } from 'react'
+import ShouldRender from './ShouldRender'
+import { ModeToggle } from './modeToggle'
+import { Button } from './ui/button'
 
 const NavHeader: FC = () => {
   const router = useRouter()

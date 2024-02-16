@@ -1,8 +1,5 @@
 'use client'
-import { getAllUsers } from '@/lib/actions'
 import { NextPage } from 'next'
-import { useEffect } from 'react'
-import { useAuthContext } from '@/lib/AuthContext'
 
 const Home: NextPage = () => {
   return (

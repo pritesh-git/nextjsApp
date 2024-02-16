@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
+import { Checkbox } from '../ui/checkbox'
 import {
   FormControl,
   FormField,
@@ -6,8 +7,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
-import { cn } from '@/lib/utils'
-import { Checkbox } from '../ui/checkbox'
 
 type Props = {
   label: string

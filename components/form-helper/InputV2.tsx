@@ -1,4 +1,4 @@
-import React from 'react'
+import { cn } from '@/lib/utils'
 import {
   FormControl,
   FormField,
@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from '../ui/form'
 import { Input } from '../ui/input'
-import { cn } from '@/lib/utils'
 
 type Props = {
   type?: string

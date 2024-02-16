@@ -1,11 +1,11 @@
-import { Inter } from 'next/font/google'
-import '../styles/globals.css'
-import type { Metadata } from 'next'
-import { ThemeProvider } from '@/components/theme-provider'
-import { ReactNode } from 'react'
 import NavHeader from '@/components/NavHeader'
+import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { AuthWrapper } from '@/lib/AuthContext'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { ReactNode } from 'react'
+import '../styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

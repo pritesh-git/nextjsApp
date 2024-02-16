@@ -24,8 +24,10 @@ export const registerSchema = z.object({
   about_me: z
     .string()
     .min(20, { message: 'About must be at least 20 characters.' }),
-  hobbies: z.string().array(),
-  profile_pic: z.string(),
+  hobbies: z.array(
+    z.string().min(1, { message: 'At least one Hobbies required' }),
+  ),
+  profile_pic: z.string().min(5, { message: 'Profile Picture is required' }),
 })
 
 export type registerData = z.infer<typeof registerSchema>

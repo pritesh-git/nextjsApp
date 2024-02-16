@@ -1,25 +1,25 @@
 'use client'
-import React, { useState } from 'react'
-import { NextPage } from 'next'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import CheckboxGroup from '@/components/form-helper/CheckboxGroup'
+import FileInput from '@/components/form-helper/FileInput'
+import InputV2 from '@/components/form-helper/InputV2'
+import TextAreaV2 from '@/components/form-helper/TextAreaV2'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { hobbiesList } from '@/shared/static/staticOptions'
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
+import { registerUser } from '@/lib/actions'
 import {
   registerData,
   registerDefaults,
   registerSchema,
 } from '@/shared/rules/register'
-import InputV2 from '@/components/form-helper/InputV2'
-import TextAreaV2 from '@/components/form-helper/TextAreaV2'
-import CheckboxGroup from '@/components/form-helper/CheckboxGroup'
-import FileInput from '@/components/form-helper/FileInput'
+import { hobbiesList } from '@/shared/static/staticOptions'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
-import { useToast } from '@/components/ui/use-toast'
-import { ToastAction } from '@/components/ui/toast'
+import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
-import { registerUser } from '@/lib/actions'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 const Page: NextPage = () => {
   const { toast } = useToast()

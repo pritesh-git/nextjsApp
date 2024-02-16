@@ -1,4 +1,4 @@
-import React from 'react'
+import { cn } from '@/lib/utils'
 import {
   FormControl,
   FormField,
@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from '../ui/form'
 import { Input } from '../ui/input'
-import { cn } from '@/lib/utils'
 
 type Props = {
   control: any
@@ -36,7 +35,12 @@ export default function FileInput({
         <FormItem className={cn(formClassName)}>
           <FormLabel className="min-w-fit flex items-center">{label}</FormLabel>
           <FormControl>
-            <Input type="file" className={cn(customClasses)} {...field} />
+            <Input
+              type="file"
+              className={cn(customClasses)}
+              {...field}
+              accept="image/*"
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
