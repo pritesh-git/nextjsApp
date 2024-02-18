@@ -13,6 +13,7 @@ type Props = {
   label: string
   fieldName: string
   formClassName?: string
+  handleChange: (el: any) => void
 }
 
 const customClasses = cn(
@@ -26,6 +27,7 @@ export default function FileInput({
   label = 'Input',
   fieldName,
   formClassName = '',
+  handleChange,
 }: Props) {
   return (
     <FormField
@@ -39,6 +41,7 @@ export default function FileInput({
               type="file"
               className={cn(customClasses)}
               {...field}
+              onBlur={el => handleChange(el.target.files?.[0])}
               accept="image/*"
             />
           </FormControl>

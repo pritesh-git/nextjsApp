@@ -1,4 +1,4 @@
-export type UserType = {
+export type UserType<FileProps = String> = {
   id?: string
   first_name: string
   last_name: string
@@ -8,7 +8,7 @@ export type UserType = {
   bio: string
   about_me: string
   hobbies: string[]
-  profile_pic?: string
+  profile_pic?: FileProps
   create_date?: Date
   role?: string
   active_status?: boolean

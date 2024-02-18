@@ -5,8 +5,8 @@ import InputV2 from '@/components/form-helper/InputV2'
 import TextAreaV2 from '@/components/form-helper/TextAreaV2'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
+import { UserType } from '@/shared/interfaces/types'
 import {
   registerData,
   registerDefaults,
@@ -15,6 +15,7 @@ import {
 import { hobbiesList } from '@/shared/static/staticOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
+import { ToastAction } from '@radix-ui/react-toast'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -25,6 +26,7 @@ const Page: NextPage = () => {
   const router = useRouter()
 
   const [selected, setSelected] = useState<string[]>([])
+  const [selectedFile, setSelectedFile] = useState(undefined)
 
   const form = useForm<registerData>({
     resolver: zodResolver(registerSchema),
@@ -38,14 +40,29 @@ const Page: NextPage = () => {
 
   const onSubmit = async (values: registerData) => {
     try {
-      const payload = { ...values, hobbies: selected }
+      const payload: UserType<File> = {
+        ...values,
+        hobbies: selected,
+        profile_pic: selectedFile,
+      }
+
+      const formData = new FormData()
+
+      for (const key in payload) {
+        if (payload.hasOwnProperty(key)) {
+          if (key === 'profile_pic' && payload[key] instanceof File) {
+            formData.append(key, payload[key] as File)
+          } else {
+            formData.append(key, payload[key] as string)
+          }
+        }
+      }
+
       const resp = await fetch('/api/user/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+        body: formData,
       })
+
       if (!resp.ok) {
         throw new Error('Network response was not ok')
       }
@@ -140,6 +157,7 @@ const Page: NextPage = () => {
           />
           <FileInput
             control={form.control}
+            handleChange={setSelectedFile}
             label="Profile Picture"
             fieldName="profile_pic"
             formClassName="flex flex-col sm:flex-row gap-3 sm:col-span-2"
