@@ -22,14 +22,20 @@ export const GET = async (request: NextRequest) => {
     })
 
     if (data.length === 0) {
-      throw new Error('Empty or invalid data')
+      return NextResponse.json(
+        { success: false, data: 'User not found' },
+        { status: 404 },
+      )
     }
 
-    return NextResponse.json({ success: true, data })
+    return NextResponse.json({ success: true, data }, { status: 200 })
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: error.message || 'Error getting Users data',
-    })
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || 'Error getting Users data',
+      },
+      { status: 500 },
+    )
   }
 }

@@ -1,4 +1,5 @@
 import { db, fireStorage } from '@/firebaseConfig'
+import { validateRegister } from '@/lib/helper/validateAuthRequest'
 import { UserType } from '@/shared/interfaces/types'
 import {
   addDoc,
@@ -33,6 +34,11 @@ export const POST = async (request: NextRequest) => {
       formDataObject[key] = value
     }
 
+    const { isInvalid, error } = validateRegister(formDataObject)
+    if (isInvalid) {
+      throw new Error(JSON.stringify(error))
+    }
+
     const existingUsersQuery = query(
       collection(db, 'users'),
       where('email', '==', formDataObject.email),
@@ -40,10 +46,15 @@ export const POST = async (request: NextRequest) => {
 
     const existingUsersSnapshot = await getDocs(existingUsersQuery)
     if (!existingUsersSnapshot.empty) {
-      return {
-        success: false,
-        message: 'Email already exists. Please use a different email.',
-      }
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Email already exists. Please use a different email.',
+        },
+        {
+          status: 409,
+        },
+      )
     }
 
     const profilePicFile = get(formDataObject, 'profile_pic', null)
@@ -51,10 +62,15 @@ export const POST = async (request: NextRequest) => {
       !(profilePicFile instanceof File) ||
       !profilePicFile.type.startsWith('image/')
     ) {
-      return NextResponse.json({
-        success: false,
-        message: 'Please upload valid Profile Picture',
-      })
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Please upload valid Profile Picture',
+        },
+        {
+          status: 400,
+        },
+      )
     }
 
     const seedCustomData = {
@@ -82,10 +98,7 @@ export const POST = async (request: NextRequest) => {
       seedCustomData.profile_pic = imageUrl
     } catch (error) {
       console.error('Error uploading file:', error)
-      return NextResponse.json({
-        success: false,
-        message: 'Error uploading Profile Picture',
-      })
+      throw new Error('Error uploading Profile Picture')
     }
     const userRef = await addDoc(collection(db, 'users'), seedCustomData)
 
@@ -94,11 +107,14 @@ export const POST = async (request: NextRequest) => {
     if (!newUser) {
       throw new Error('Failed to register user')
     }
-    return NextResponse.json({ success: true, data: newUser })
+    return NextResponse.json({ success: true, data: newUser }, { status: 201 })
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: error.message || 'An error occurred during registration',
-    })
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || 'An error occurred during registration',
+      },
+      { status: 500 },
+    )
   }
 }

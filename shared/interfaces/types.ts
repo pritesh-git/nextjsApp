@@ -1,4 +1,5 @@
 export type UserType<FileProps = String> = {
+  [key: string]: any
   id?: string
   first_name: string
   last_name: string

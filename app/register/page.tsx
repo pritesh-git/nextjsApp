@@ -53,7 +53,7 @@ const Page: NextPage = () => {
           if (key === 'profile_pic' && payload[key] instanceof File) {
             formData.append(key, payload[key] as File)
           } else {
-            formData.append(key, payload[key] as string)
+            formData.append(key, payload[key])
           }
         }
       }
@@ -63,27 +63,24 @@ const Page: NextPage = () => {
         body: formData,
       })
 
-      if (!resp.ok) {
-        throw new Error('Network response was not ok')
-      }
       const data = await resp.json()
+      if (!resp.ok) {
+        throw new Error(data.message)
+      }
       toast({
         variant: 'success',
         description: 'Successfully Registered',
         duration: 2500,
       })
-      console.log('resp', data)
-    } catch (err) {
-      console.log('err', err)
+      handleReset()
+    } catch (err: any) {
       toast({
         duration: 2500,
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+        description: err.message || 'There was a problem with your request.',
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
-    } finally {
-      handleReset()
     }
   }
 

@@ -22,17 +22,23 @@ export const GET = async (request: NextRequest, context: any) => {
     const userDoc = await getDoc(doc(db, 'users', id))
 
     if (!userDoc.exists()) {
-      throw new Error('User not found')
+      return NextResponse.json(
+        { success: false, data: 'User not found' },
+        { status: 404 },
+      )
     }
 
     const userData = userDoc.data() as UserType
 
-    return NextResponse.json({ success: true, data: userData })
+    return NextResponse.json({ success: true, data: userData }, { status: 200 })
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: error.message || 'Error getting user data',
-    })
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || 'Error getting user data',
+      },
+      { status: 500 },
+    )
   }
 }
 
@@ -44,23 +50,27 @@ export const PUT = async (request: NextRequest, context: any) => {
     const payload = await request.json()
 
     const userRef = doc(db, 'users', id)
+
+    const getUserDoc = await getDoc(userRef)
+    if (!getUserDoc.exists()) {
+      return NextResponse.json(
+        { success: false, data: 'User not found' },
+        { status: 404 },
+      )
+    }
     await updateDoc(userRef, payload)
 
-    const updatedUserDoc = await getDoc(userRef)
-    if (!updatedUserDoc.exists()) {
-      throw new Error('Updated user data not found')
-    }
-
-    const updatedUserData = {
-      id: updatedUserDoc.id,
-      ...updatedUserDoc.data(),
-    } as UserType
-
-    return NextResponse.json({ success: true, data: updatedUserData })
+    return NextResponse.json(
+      { success: true, message: 'Updated SuccessFully' },
+      { status: 204 },
+    )
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: error.message || 'Error updating user data',
-    })
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || 'Error updating user data',
+      },
+      { status: 500 },
+    )
   }
 }
