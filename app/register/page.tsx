@@ -5,7 +5,6 @@ import InputV2 from '@/components/form-helper/InputV2'
 import TextAreaV2 from '@/components/form-helper/TextAreaV2'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { useToast } from '@/components/ui/use-toast'
 import { UserType } from '@/shared/interfaces/types'
 import {
   registerData,
@@ -15,14 +14,13 @@ import {
 import { hobbiesList } from '@/shared/static/staticOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
-import { ToastAction } from '@radix-ui/react-toast'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 const Page: NextPage = () => {
-  const { toast } = useToast()
   const router = useRouter()
 
   const [selected, setSelected] = useState<string[]>([])
@@ -67,19 +65,11 @@ const Page: NextPage = () => {
       if (!resp.ok) {
         throw new Error(data.message)
       }
-      toast({
-        variant: 'success',
-        description: 'Successfully Registered',
-        duration: 2500,
-      })
+      toast.success('Successfully Registered')
       handleReset()
     } catch (err: any) {
-      toast({
-        duration: 2500,
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
+      toast.error('Uh oh! Something went wrong.', {
         description: err.message || 'There was a problem with your request.',
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
     }
   }

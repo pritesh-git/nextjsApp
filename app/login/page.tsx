@@ -2,17 +2,15 @@
 import InputV2 from '@/components/form-helper/InputV2'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { ToastAction } from '@/components/ui/toast'
-import { useToast } from '@/components/ui/use-toast'
 import { loginData, loginDefaults, loginSchema } from '@/shared/rules/login'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 const Page: NextPage = () => {
-  const { toast } = useToast()
   const router = useRouter()
 
   const form = useForm<loginData>({
@@ -40,19 +38,11 @@ const Page: NextPage = () => {
       if (!resp.ok) {
         throw new Error(data.message)
       }
-      toast({
-        variant: 'success',
-        description: 'Successfully Logged In',
-        duration: 2500,
-      })
+      toast.success('Successfully Logged In')
       handleReset()
     } catch (err: any) {
-      toast({
-        duration: 2500,
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
+      toast.error('Uh oh! Something went wrong.', {
         description: err.message || 'There was a problem with your request.',
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
     }
   }

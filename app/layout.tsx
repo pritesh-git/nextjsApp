@@ -1,6 +1,6 @@
 import NavHeader from '@/components/NavHeader'
 import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 import { AuthWrapper } from '@/lib/AuthContext'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -36,7 +36,7 @@ export default function RootLayout({
             disableTransitionOnChange>
             <NavHeader />
             {children}
-            <Toaster />
+            <Toaster richColors />
           </ThemeProvider>
         </AuthWrapper>
       </body>

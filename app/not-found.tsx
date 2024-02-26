@@ -23,7 +23,7 @@ const NotFound: FC = () => {
               className="bg-cover bg-center h-80 sm:h-96"
               style={{
                 background:
-                  'url(/404-toon.gif) no-repeat center center / contain',
+                  'url(/404-page.gif) no-repeat center center / contain',
               }}>
               <h1 className="text-6xl">404</h1>
             </div>
