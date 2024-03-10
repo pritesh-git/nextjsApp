@@ -10,3 +10,12 @@ export const hobbiesList = [
   { id: 'music', label: 'Music' },
   { id: 'art', label: 'Art' },
 ]
+
+export const validSortKeys = [
+  'id',
+  'fullName',
+  'first_name',
+  'email',
+  'last_name',
+  'create_date',
+]
