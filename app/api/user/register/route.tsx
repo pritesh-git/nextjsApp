@@ -1,118 +1,62 @@
-import { db, fireStorage } from '@/firebaseConfig'
-import { validateRegister } from '@/lib/helper/validateAuthRequest'
-import { UserType } from '@/shared/interfaces/types'
-import {
-  addDoc,
-  collection,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { get } from 'lodash'
+import db from '@/config/db'
 import { NextRequest, NextResponse } from 'next/server'
-
-function generateUniqueFilename(
-  fileOriginalName: string,
-  userName = 'User',
-): string {
-  const extension = fileOriginalName.split('.').pop()
-  const sanitizedUserName = userName.replace(/[^a-zA-Z0-9]/g, '')
-  const randomData = Math.random().toString(36).substring(2, 15)
-  return `${sanitizedUserName}_${randomData}.${extension}`
-}
 
 export const POST = async (request: NextRequest) => {
   try {
-    const formData = await request.formData()
-    const formDataObject: { [key: string]: string | File } = {}
+    const userData = await request.json()
 
-    const entries = Array.from(formData.entries())
-    for (let i = 0; i < entries.length; i++) {
-      const [key, value] = entries[i]
-      formDataObject[key] = value
+    // Check if all required fields are provided
+    const requiredFields = ['first_name', 'last_name', 'email', 'password']
+    for (const field of requiredFields) {
+      if (!userData[field]) {
+        return NextResponse.json(
+          { success: false, message: `${field} is required` },
+          { status: 400 },
+        )
+      }
     }
 
-    const { isInvalid, error } = validateRegister(formDataObject)
-    if (isInvalid) {
-      throw new Error(JSON.stringify(error))
-    }
+    // Query to insert user into the database
+    const query = `INSERT INTO users (first_name, last_name, email, password, bio, about_me, hobbies, profile_pic, is_active, created_date) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
-    const existingUsersQuery = query(
-      collection(db, 'users'),
-      where('email', '==', formDataObject.email),
-    )
-
-    const existingUsersSnapshot = await getDocs(existingUsersQuery)
-    if (!existingUsersSnapshot.empty) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Email already exists. Please use a different email.',
-        },
-        {
-          status: 409,
-        },
-      )
-    }
-
-    const profilePicFile = get(formDataObject, 'profile_pic', null)
-    if (
-      !(profilePicFile instanceof File) ||
-      !profilePicFile.type.startsWith('image/')
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Please upload valid Profile Picture',
-        },
-        {
-          status: 400,
+    // Execute the query with user data
+    await new Promise((resolve, reject) => {
+      db.query(
+        query,
+        [
+          userData.first_name,
+          userData.last_name,
+          userData.email,
+          userData.password,
+          userData.bio || null,
+          userData.about_me || null,
+          userData.hobbies || null,
+          userData.profile_pic || null,
+          userData.is_active || 1,
+          new Date().toISOString(),
+        ],
+        (err: any) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve('success')
+          }
         },
       )
-    }
+    })
 
-    const seedCustomData = {
-      ...(formDataObject as Partial<UserType<File>>),
-      hobbies: formDataObject.hobbies || [],
-      active_status:
-        formDataObject.active_status !== undefined
-          ? formDataObject.active_status
-          : true,
-      create_date: formDataObject.create_date || new Date(),
-    } as UserType
-
-    seedCustomData.fullName = `${seedCustomData.first_name} ${seedCustomData.last_name}`
-
-    const generateName = generateUniqueFilename(
-      profilePicFile.name,
-      seedCustomData.first_name,
+    // Return success response
+    return NextResponse.json(
+      { success: true, message: 'User registered successfully' },
+      { status: 201 },
     )
-
-    const fileRef = ref(fireStorage, `users/${generateName}`)
-
-    try {
-      const snapshot = await uploadBytes(fileRef, profilePicFile)
-      const imageUrl = await getDownloadURL(snapshot.ref)
-      seedCustomData.profile_pic = imageUrl
-    } catch (error) {
-      console.error('Error uploading file:', error)
-      throw new Error('Error uploading Profile Picture')
-    }
-    const userRef = await addDoc(collection(db, 'users'), seedCustomData)
-
-    const newUserDoc = await getDoc(userRef)
-    const newUser = { id: newUserDoc.id, ...newUserDoc.data() } as UserType
-    if (!newUser) {
-      throw new Error('Failed to register user')
-    }
-    return NextResponse.json({ success: true, data: newUser }, { status: 201 })
   } catch (error: any) {
+    // Handle any errors
     return NextResponse.json(
       {
         success: false,
-        message: error.message || 'An error occurred during registration',
+        message: error.message || 'Error registering user',
       },
       { status: 500 },
     )

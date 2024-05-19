@@ -1,37 +1,47 @@
-import { db } from '@/firebaseConfig'
+import db from '@/config/db'
 import { UserType } from '@/shared/interfaces/types'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { NextRequest, NextResponse } from 'next/server'
 
-export const GET = async (request: NextRequest, context: any) => {
+export const GET = async (context: any) => {
   try {
     const {
       params: { id },
     } = context
 
-    const queryParams: any = {}
-
-    request.nextUrl.searchParams.forEach((value, key) => {
-      queryParams[key] = value
-    })
-
-    if (queryParams) {
-      // TODO: filter code
+    // Check if user ID is provided
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: 'User ID is required' },
+        { status: 400 },
+      )
     }
 
-    const userDoc = await getDoc(doc(db, 'users', id))
+    // Query to fetch user by ID
+    const query = `SELECT id, first_name, last_name, email, bio, about_me, hobbies, profile_pic, is_active, created_date FROM users WHERE id = ?`
 
-    if (!userDoc.exists()) {
+    // Execute the query with user ID
+    const user: UserType[] = await new Promise((resolve, reject) => {
+      db.query(query, [id], (err: any, results: UserType[]) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
+    })
+
+    // Check if user exists
+    if (user.length === 0) {
       return NextResponse.json(
-        { success: false, data: 'User not found' },
+        { success: false, message: 'User not found' },
         { status: 404 },
       )
     }
 
-    const userData = userDoc.data() as UserType
-
-    return NextResponse.json({ success: true, data: userData }, { status: 200 })
+    // Return the user data
+    return NextResponse.json({ success: true, data: user }, { status: 200 })
   } catch (error: any) {
+    // Handle any errors
     return NextResponse.json(
       {
         success: false,
@@ -47,24 +57,45 @@ export const PUT = async (request: NextRequest, context: any) => {
     const {
       params: { id },
     } = context
-    const payload = await request.json()
+    const userData = await request.json()
 
-    const userRef = doc(db, 'users', id)
+    // Query to update user by ID
+    const query = `UPDATE users 
+                   SET first_name = ?, last_name = ?, email = ?, bio = ?, about_me = ?, hobbies = ?, profile_pic = ?, is_active = ? 
+                   WHERE id = ?`
 
-    const getUserDoc = await getDoc(userRef)
-    if (!getUserDoc.exists()) {
-      return NextResponse.json(
-        { success: false, data: 'User not found' },
-        { status: 404 },
+    // Execute the query with user data and ID
+    await new Promise((resolve, reject) => {
+      db.query(
+        query,
+        [
+          userData.first_name,
+          userData.last_name,
+          userData.email,
+          userData.bio,
+          userData.about_me,
+          userData.hobbies,
+          userData.profile_pic,
+          userData.is_active,
+          id,
+        ],
+        (err: any) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve('success')
+          }
+        },
       )
-    }
-    await updateDoc(userRef, payload)
+    })
 
+    // Return success response
     return NextResponse.json(
-      { success: true, message: 'Updated SuccessFully' },
-      { status: 204 },
+      { success: true, message: 'User updated successfully' },
+      { status: 200 },
     )
   } catch (error: any) {
+    // Handle any errors
     return NextResponse.json(
       {
         success: false,

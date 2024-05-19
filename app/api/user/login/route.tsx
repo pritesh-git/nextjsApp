@@ -1,56 +1,68 @@
-import { db } from '@/firebaseConfig'
-import { validateLogin } from '@/lib/helper/validateAuthRequest'
+import db from '@/config/db'
 import { UserType } from '@/shared/interfaces/types'
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import bcrypt from 'bcryptjs'
+import { omit } from 'lodash'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (request: NextRequest) => {
   try {
     const { email, password } = await request.json()
-    const { isInvalid, error } = validateLogin({ email, password })
-    if (isInvalid) {
-      throw new Error(JSON.stringify(error))
+
+    if (!email) {
+      return NextResponse.json(
+        { success: false, message: 'Email is required' },
+        { status: 400 },
+      )
     }
 
-    const usersRef = query(collection(db, 'users'), where('email', '==', email))
-    const querySnapshot = await getDocs(usersRef)
+    if (!password) {
+      return NextResponse.json(
+        { success: false, message: 'Password is required' },
+        { status: 400 },
+      )
+    }
 
-    if (querySnapshot.empty) {
+    const query = 'SELECT * FROM users WHERE email = ?'
+    console.log('query', query)
+    const user: UserType[] = await new Promise((resolve, reject) => {
+      db.query(query, [email], (err: any, results: UserType[]) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
+    })
+
+    if (user.length === 0) {
       return NextResponse.json(
         { success: false, message: 'Email not found' },
-        { status: 400 },
+        { status: 401 },
       )
     }
 
-    const userDoc = querySnapshot.docs[0]
-    const userData = { id: userDoc.id, ...userDoc.data() } as UserType
-
-    if (userData.password !== password) {
+    const isPasswordValid =
+      (await bcrypt.compare(password, user[0].password)) ||
+      password === user[0].password
+    if (!isPasswordValid) {
       return NextResponse.json(
-        {
-          success: false,
-          message: 'Password incorrect',
-        },
-        { status: 400 },
+        { success: false, message: 'Invalid password' },
+        { status: 401 },
       )
     }
-
-    if (!userData.active_status) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'User is not active',
-        },
-        { status: 403 },
-      )
-    }
-
-    return NextResponse.json({ success: true, data: userData }, { status: 200 })
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Login successful',
+        user: omit(user[0], 'password'),
+      },
+      { status: 200 },
+    )
   } catch (error: any) {
     return NextResponse.json(
       {
         success: false,
-        message: JSON.parse(error.message) || 'An error occurred',
+        message: error.message || 'Error during login process',
       },
       { status: 500 },
     )

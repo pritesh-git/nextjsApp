@@ -1,24 +1,12 @@
-import { db } from '@/firebaseConfig'
+import db from '@/config/db'
 import { UserType } from '@/shared/interfaces/types'
-import { validSortKeys } from '@/shared/static/staticOptions'
-import {
-  DocumentData,
-  collection,
-  getCountFromServer,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore'
-import { ceil, includes, toNumber } from 'lodash'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const GET = async (request: NextRequest) => {
   try {
     const queryParams: any = {}
     const filters = []
-    let sortingBy = 'create_date'
+    let sortingBy = 'created_date'
     let sortingOrder: 'asc' | 'desc' = 'asc'
     let dataLimit = 10
     request.nextUrl.searchParams.forEach((value, key) => {
@@ -26,52 +14,52 @@ export const GET = async (request: NextRequest) => {
     })
 
     if (queryParams) {
-      const { limit, sortOrder, sortBy, name, email } = queryParams
+      const { limit, sortOrder, sortBy, first_name, email } = queryParams
 
-      if (limit != null && !isNaN(toNumber(limit)) && toNumber(limit) > 0) {
-        dataLimit = limit
+      if (limit) {
+        dataLimit = parseInt(limit, 10)
       }
-
-      if (name || email) {
-        if (name && name.length) {
-          filters.push(where('fullName', '>=', name))
-          filters.push(where('fullName', '<=', name + '\uf8ff'))
-          sortingBy = 'fullName'
-        }
-        if (email && email.length) {
-          filters.push(where('email', '>=', email))
-          filters.push(where('email', '<=', email + '\uf8ff'))
-          sortingBy = 'email'
-        }
-      } else {
-        if (sortBy != null && includes(validSortKeys, sortBy)) {
-          sortingBy = sortBy
-        }
-      }
-      if (sortOrder != null && includes(['asc', 'desc'], sortOrder)) {
+      if (sortOrder && (sortOrder === 'asc' || sortOrder === 'desc')) {
         sortingOrder = sortOrder
       }
+      if (sortBy) {
+        sortingBy = sortBy
+      }
+      if (first_name) {
+        filters.push(`first_name LIKE '%${first_name}%'`)
+      }
+      if (email) {
+        filters.push(`email LIKE '%${email}%'`)
+      }
     }
 
-    const data: UserType[] = []
-    const customQuery = query(
-      collection(db, 'users'),
-      ...filters,
-      orderBy(sortingBy, sortingOrder),
-    )
-    const count = (await getCountFromServer(query(customQuery))).data().count
-    const totalData = {
-      dataCount: count,
-      limit: dataLimit,
-      totalPage: dataLimit <= count ? ceil(count / dataLimit) : 1,
-    }
+    const whereClause =
+      filters.length > 0 ? `WHERE ${filters.join(' AND ')}` : ''
+    const query = `SELECT id, first_name, last_name, email, bio, about_me, hobbies, profile_pic, is_active, created_date FROM users ${whereClause} ORDER BY ${sortingBy} ${sortingOrder} LIMIT ${dataLimit}`
+    const countQuery = `SELECT COUNT(*) AS total_data FROM users ${whereClause}`
 
-    const querySnapshot = await getDocs(query(customQuery, limit(dataLimit)))
-    querySnapshot.forEach((doc: DocumentData) => {
-      data.push({ id: doc.id, ...doc.data() } as UserType)
+    const result: UserType[] = await new Promise((resolve, reject) => {
+      db.query(query, (err: any, results: []) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
     })
+    const totalData: { total_data: string }[] = await new Promise(
+      (resolve, reject) => {
+        db.query(countQuery, (err: any, results: []) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(results)
+          }
+        })
+      },
+    )
 
-    if (data.length === 0) {
+    if (result.length === 0) {
       return NextResponse.json(
         { success: false, data: 'User not found' },
         { status: 404 },
@@ -79,7 +67,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     return NextResponse.json(
-      { success: true, data, totalData },
+      { success: true, data: result, total: totalData[0].total_data },
       { status: 200 },
     )
   } catch (error: any) {
