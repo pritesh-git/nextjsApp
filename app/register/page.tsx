@@ -67,6 +67,7 @@ const Page: NextPage = () => {
       }
       toast.success('Successfully Registered')
       handleReset()
+      router.push('/')
     } catch (err: any) {
       toast.error('Uh oh! Something went wrong.', {
         description: err.message || 'There was a problem with your request.',

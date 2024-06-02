@@ -1,5 +1,4 @@
 import db from '@/config/db'
-import { UserType } from '@/shared/interfaces/types'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const GET = async (request: NextRequest) => {
@@ -13,7 +12,7 @@ export const GET = async (request: NextRequest) => {
       queryParams[key] = value
     })
 
-    if (queryParams) {
+    if (Object.keys(queryParams).length > 0) {
       const { limit, sortOrder, sortBy, first_name, email } = queryParams
 
       if (limit) {
@@ -38,26 +37,8 @@ export const GET = async (request: NextRequest) => {
     const query = `SELECT id, first_name, last_name, email, bio, about_me, hobbies, profile_pic, is_active, created_date FROM users ${whereClause} ORDER BY ${sortingBy} ${sortingOrder} LIMIT ${dataLimit}`
     const countQuery = `SELECT COUNT(*) AS total_data FROM users ${whereClause}`
 
-    const result: UserType[] = await new Promise((resolve, reject) => {
-      db.query(query, (err: any, results: []) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(results)
-        }
-      })
-    })
-    const totalData: { total_data: string }[] = await new Promise(
-      (resolve, reject) => {
-        db.query(countQuery, (err: any, results: []) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(results)
-          }
-        })
-      },
-    )
+    const [result]: any = await db.query(query)
+    const [totalData]: any = await db.query(countQuery)
 
     if (result.length === 0) {
       return NextResponse.json(

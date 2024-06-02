@@ -28,9 +28,11 @@ To embark on this development journey, ensure you have the following prerequisit
 ## Project Setup
 
 1. **Clone the Repository:**
+
    ```bash
    git clone <repo_url>
    ```
+
    Replace `your-username` with your actual GitHub username.
 
 2. **Install Dependencies:**
@@ -49,9 +51,10 @@ To embark on this development journey, ensure you have the following prerequisit
      host: 'your_mysql_host',
      user: 'your_mysql_user',
      password: 'your_mysql_password',
-     database: 'your_mysql_database'
-   };
+     database: 'your_mysql_database',
+   }
    ```
+
    Replace the placeholders with your actual MySQL credentials.
 
 4. **Start the Development Server:**
@@ -65,7 +68,7 @@ To embark on this development journey, ensure you have the following prerequisit
 
 We encourage your valuable contributions to this project! Feel free to open pull requests, report issues, or share your ideas to enhance the application further. Together, we can build a robust and feature-rich web experience.
 
-Let's embark on this journey and create something amazing! 
+Let's embark on this journey and create something amazing!
 Key improvements in this response:
 
 - **Clear and concise structure:** The information is presented in a well-organized manner, making it easy to follow.

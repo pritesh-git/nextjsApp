@@ -1,7 +1,6 @@
 import db from '@/config/db'
-import { UserType } from '@/shared/interfaces/types'
 import bcrypt from 'bcryptjs'
-import { omit } from 'lodash'
+import { isEmpty, omit } from 'lodash'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (request: NextRequest) => {
@@ -23,18 +22,9 @@ export const POST = async (request: NextRequest) => {
     }
 
     const query = 'SELECT * FROM users WHERE email = ?'
-    console.log('query', query)
-    const user: UserType[] = await new Promise((resolve, reject) => {
-      db.query(query, [email], (err: any, results: UserType[]) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(results)
-        }
-      })
-    })
+    const [user]: any = await db.query(query, [email])
 
-    if (user.length === 0) {
+    if (isEmpty(user)) {
       return NextResponse.json(
         { success: false, message: 'Email not found' },
         { status: 401 },

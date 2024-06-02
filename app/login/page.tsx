@@ -2,21 +2,28 @@
 import InputV2 from '@/components/form-helper/InputV2'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
+import { useAuthContext } from '@/lib/AuthContext'
 import { loginData, loginDefaults, loginSchema } from '@/shared/rules/login'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 const Page: NextPage = () => {
   const router = useRouter()
+  const { isLoggedIn, setIsLoggedIn, setUser } = useAuthContext()
 
   const form = useForm<loginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: loginDefaults,
   })
+
+  useEffect(() => {
+    if (isLoggedIn) router.push('/')
+  }, [isLoggedIn, router])
 
   const handleReset = () => {
     form.reset(loginDefaults)
@@ -38,8 +45,11 @@ const Page: NextPage = () => {
       if (!resp.ok) {
         throw new Error(data.message)
       }
+      setUser(data)
+      setIsLoggedIn(true)
       toast.success('Successfully Logged In')
       handleReset()
+      router.push('/')
     } catch (err: any) {
       toast.error('Uh oh! Something went wrong.', {
         description: err.message || 'There was a problem with your request.',
