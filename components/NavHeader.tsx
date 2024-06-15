@@ -19,10 +19,25 @@ import { Button } from './ui/button'
 
 const NavHeader: FC = () => {
   const router = useRouter()
-  const { isLoggedIn, user: profileData } = useAuthContext()
+  const {
+    isLoggedIn,
+    user: profileData,
+    setIsLoggedIn,
+    setUser,
+  } = useAuthContext()
   const firstName = profileData?.first_name ?? 'Guest'
   const lastName = profileData?.last_name ?? 'User'
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`
+
+  const handleLogout = () => {
+    // Perform logout actions
+    setIsLoggedIn(false) // Set isLoggedIn to false
+    setUser(null) // Clear user data
+
+    // Redirect to the login page or any other appropriate page
+    router.push('/login')
+  }
+
   return (
     // Navigation bar layout
     <nav className="sticky top-0 z-50 w-full flex flex-row gap-5 justify-between items-center p-4 bg-opacity-50 backdrop-blur-md">
@@ -97,7 +112,10 @@ const NavHeader: FC = () => {
               <DropdownMenuItem key="help_and_feedback">
                 Help & Feedback
               </DropdownMenuItem>
-              <DropdownMenuItem key="logout" className="text-red-500">
+              <DropdownMenuItem
+                key="logout"
+                className="text-red-500"
+                onClick={handleLogout}>
                 Log Out
               </DropdownMenuItem>
             </DropdownMenuContent>

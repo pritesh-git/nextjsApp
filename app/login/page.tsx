@@ -7,6 +7,7 @@ import { loginData, loginDefaults, loginSchema } from '@/shared/rules/login'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -94,6 +95,13 @@ const Page: NextPage = () => {
           </div>
         </form>
       </Form>
+      <p className="w-full text-center">
+        Don&#39;t have a account?{' '}
+        <Link href="/register" className="font-bold">
+          Register
+        </Link>{' '}
+        now
+      </p>
     </main>
   )
 }
