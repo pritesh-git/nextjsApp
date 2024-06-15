@@ -15,6 +15,7 @@ import { hobbiesList } from '@/shared/static/staticOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -160,6 +161,13 @@ const Page: NextPage = () => {
           </div>
         </form>
       </Form>
+      <p className="w-full text-center">
+        Already have a account?{' '}
+        <Link href="/login" className="font-bold">
+          Login
+        </Link>{' '}
+        now
+      </p>
     </main>
   )
 }

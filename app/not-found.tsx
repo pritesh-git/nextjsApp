@@ -8,7 +8,7 @@ const NotFound: FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/')
-    }, 6000)
+    }, 4000)
 
     // Clear the timer on component unmount to avoid memory leaks
     return () => clearTimeout(timer)
